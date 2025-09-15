@@ -1,0 +1,21 @@
+.sidebar-link.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+@media (max-width: 990px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    transition: 0.3s ease-in;
+  }
+  .sidebar.show {
+    left: 0;
+  }
+}
+@media (max-width: 380px) {
+  .sidebar {
+    width: 80%;
+    left: -80%;
+  }
+}

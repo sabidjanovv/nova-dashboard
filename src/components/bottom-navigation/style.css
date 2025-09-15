@@ -1,0 +1,18 @@
+.bottom-navigation.active{
+    color: dodgerblue;
+    background: #ffffff96;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #e8f3ff;
+}
+.dark .bottom-navigation.active{
+    background: #101828ab;
+    box-shadow: 0 0 0;
+}
+.dashboard-navigation{
+    display: none;
+}
+@media (max-width: 990px) {
+    .dashboard-navigation{
+        display: flex;
+    }
+}
