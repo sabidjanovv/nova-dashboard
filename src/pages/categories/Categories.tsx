@@ -1,6 +1,6 @@
 // pages/categories.tsx
 import React, { useState } from "react";
-import Head from "next/head";
+import { Helmet } from "react-helmet";
 import {
   useGetAllCategoriesQuery,
   useAddCategoryMutation,
@@ -83,6 +83,9 @@ const CategoriesPage: React.FC = () => {
   if (!data || !Array.isArray(data) || data.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-screen gap-4">
+        <Helmet>
+          <title>Kategoriyalar</title>
+        </Helmet>
         <p className="text-gray-600 text-base">
           Hozircha hech qanday kategoriya mavjud emas.
         </p>
@@ -98,9 +101,9 @@ const CategoriesPage: React.FC = () => {
 
   return (
     <>
-      <Head>
+      <Helmet>
         <title>Kategoriyalar</title>
-      </Head>
+      </Helmet>
       <div className="container mx-auto px-6 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-semibold text-gray-900">

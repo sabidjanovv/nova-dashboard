@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Head from "next/head";
+import { Helmet } from "react-helmet"; // ✅ next/head o‘rniga
 import {
   useGetAllCollectionsQuery,
   useAddCollectionMutation,
@@ -96,9 +96,10 @@ const CollectionsPage: React.FC = () => {
 
   return (
     <>
-      <Head>
+      <Helmet>
         <title>Kolleksiyalar</title>
-      </Head>
+      </Helmet>
+
       <div className="container mx-auto p-8">
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-bold text-gray-900">Kolleksiyalar</h1>
