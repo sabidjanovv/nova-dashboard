@@ -91,6 +91,7 @@ const AdminPage: React.FC = () => {
           className="bg-black"
           icon={<PlusOutlined />}
           onClick={handleAdd}
+          style={{ backgroundColor: "black", borderColor: "black" }}
         >
           Admin qo‘shish
         </Button>
