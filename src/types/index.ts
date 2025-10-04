@@ -40,3 +40,13 @@ export interface CollectionDto {
   category_id: number;
   files?: FileList | null;
 }
+
+
+export interface TeamRequest {
+  full_name: string;
+  position?: string;
+  description?: string;
+  phone?: string;
+  is_active: boolean;
+  file?: File; // shu qator muammoni yechadi
+}
