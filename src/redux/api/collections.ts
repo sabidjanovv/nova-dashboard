@@ -17,10 +17,11 @@ const extendedApi = mainApi.injectEndpoints({
       }
     >({
       query: (params) => ({
-        url: "collections", 
+        url: "collections",
         method: "GET",
         params,
       }),
+      providesTags: ["COLLECTION"], // ✅ cache tag
     }),
 
     // 🔎 GET single collection by ID
@@ -29,6 +30,7 @@ const extendedApi = mainApi.injectEndpoints({
         url: `collections/${id}`,
         method: "GET",
       }),
+      providesTags: ["COLLECTION"], // ✅
     }),
 
     // ➕ ADD collection
@@ -38,15 +40,17 @@ const extendedApi = mainApi.injectEndpoints({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["COLLECTION"], // ✅ yangi qo‘shilganda cache yangilanadi
     }),
 
     // ✏️ UPDATE collection
     updateCollection: build.mutation<any, { id: number; body: Partial<any> }>({
       query: ({ id, body }) => ({
         url: `collections/${id}`,
-        method: "PATCH", // ✅ faqat qisman yangilash
+        method: "PATCH",
         body,
       }),
+      invalidatesTags: ["COLLECTION"], // ✅ yangilanganda cache tozalanadi
     }),
 
     // ❌ DELETE collection
@@ -55,6 +59,7 @@ const extendedApi = mainApi.injectEndpoints({
         url: `collections/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["COLLECTION"], // ✅ o‘chirilib bo‘lgach cache yangilanadi
     }),
   }),
   overrideExisting: false,

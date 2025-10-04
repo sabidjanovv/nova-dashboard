@@ -9,6 +9,8 @@ import Profile from "./profile/Profile";
 import CategoriesPage from "./categories/Categories";
 import CollectionsPage from "./collections/Collections";
 import CollectionDetail from "./collections/CollectionDetail";
+import TeamPage from "./team/TeamPage";
+import AdminPage from "./admins/AdminPage";
 const AppRouter = () => {
   return (
     <>
@@ -66,6 +68,22 @@ const AppRouter = () => {
                       element: (
                         <Suspense>
                           <Profile />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/team",
+                      element: (
+                        <Suspense>
+                          <TeamPage />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/admins",
+                      element: (
+                        <Suspense>
+                          <AdminPage />
                         </Suspense>
                       ),
                     },

@@ -1,5 +1,8 @@
 import { FaRegCircleUser } from "react-icons/fa6";
-import { MdOutlineCategory, MdOutlineCollectionsBookmark } from "react-icons/md";
+import {
+  MdOutlineCategory,
+  MdOutlineCollectionsBookmark,
+} from "react-icons/md";
 import { FaUsersCog } from "react-icons/fa";
 import { RiTeamLine } from "react-icons/ri";
 import { theme } from "antd";
@@ -67,3 +70,4 @@ export const SIDEBAR_LINKS = [
     icon: <FaRegCircleUser className="text-2xl" />, // profil
   },
 ];
+
