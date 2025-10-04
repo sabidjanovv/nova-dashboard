@@ -121,8 +121,7 @@ const AdminModal: React.FC<Props> = ({ open, setOpen, editData, refetch }) => {
         >
           <Select>
             <Option value="admin">Admin</Option>
-            <Option value="super_admin">Super Admin</Option>
-            <Option value="moderator">Moderator</Option>
+            <Option value="superadmin">Super Admin</Option>
           </Select>
         </Form.Item>
 
