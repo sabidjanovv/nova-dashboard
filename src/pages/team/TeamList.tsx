@@ -1,5 +1,5 @@
-import { useGetAllTeamQuery } from "@/redux/api/team";
 import { Button } from "antd";
+import { useGetAllTeamQuery } from "../../redux/api/team";
 
 const TeamList = ({ onEdit }: { onEdit: (data: any) => void }) => {
   const { data: members = [], isLoading } = useGetAllTeamQuery();
