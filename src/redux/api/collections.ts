@@ -53,6 +53,19 @@ const extendedApi = mainApi.injectEndpoints({
       invalidatesTags: ["COLLECTION"], // ✅ yangilanganda cache tozalanadi
     }),
 
+    updateMainImage: build.mutation<any, { id: number; main_image_id: number }>(
+      {
+        query: ({ id, main_image_id }) => {
+          return {
+            url: `collections/${id}/main-image`,
+            method: "PATCH",
+            body: { main_image_id },
+          };
+        },
+        invalidatesTags: ["COLLECTION"], // yangilanganidan keyin cache tozalanadi
+      }
+    ),
+
     // ❌ DELETE collection
     deleteCollection: build.mutation<any, number>({
       query: (id) => ({
@@ -70,5 +83,6 @@ export const {
   useGetCollectionByIdQuery,
   useAddCollectionMutation,
   useUpdateCollectionMutation,
+  useUpdateMainImageMutation,
   useDeleteCollectionMutation,
 } = extendedApi;
