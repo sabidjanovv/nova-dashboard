@@ -6,7 +6,7 @@ import { CollectionDto } from "../../types";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: CollectionDto) => void;
+  onSubmit: (data: CollectionDto) => Promise<void> | void;
   initialValues?: Partial<CollectionDto>;
 }
 
@@ -16,7 +16,13 @@ const CollectionModal: React.FC<Props> = ({
   onSubmit,
   initialValues,
 }) => {
-  const { register, handleSubmit, reset, setValue } = useForm<CollectionDto>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { isSubmitting },
+  } = useForm<CollectionDto>({
     defaultValues: {
       title: "",
       description_uz: "",
@@ -45,7 +51,11 @@ const CollectionModal: React.FC<Props> = ({
           {initialValues ? "Kolleksiyani tahrirlash" : "Yangi kolleksiya"}
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-5"
+          autoComplete="off"
+        >
           {/* Category */}
           <div>
             <label
@@ -129,15 +139,17 @@ const CollectionModal: React.FC<Props> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
+              disabled={isSubmitting}
+              className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition disabled:opacity-50"
             >
               Bekor qilish
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+              disabled={isSubmitting}
+              className="px-4 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition disabled:opacity-50"
             >
-              Saqlash
+              {isSubmitting ? "Saqlanmoqda..." : "Saqlash"}
             </button>
           </div>
         </form>
