@@ -31,9 +31,21 @@ const extendedApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["TEAM"],
     }),
+
+    deleteTeam: build.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `team/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["TEAM"],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useAddTeamMutation, useGetAllTeamQuery, useEditTeamMutation } =
-  extendedApi;
+export const {
+  useAddTeamMutation,
+  useGetAllTeamQuery,
+  useEditTeamMutation,
+  useDeleteTeamMutation,
+} = extendedApi;

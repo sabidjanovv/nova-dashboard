@@ -1,16 +1,29 @@
-import { Button } from "antd";
-import { useGetAllTeamQuery } from "../../redux/api/team";
+import { Button, Popconfirm, message } from "antd";
+import {
+  useGetAllTeamQuery,
+  useDeleteTeamMutation,
+} from "../../redux/api/team";
 
 const TeamList = ({ onEdit }: { onEdit: (data: any) => void }) => {
   const { data: members = [], isLoading } = useGetAllTeamQuery();
+  const [deleteTeam, { isLoading: deleting }] = useDeleteTeamMutation();
   const imageUrl = import.meta.env.VITE_PUBLIC_IMAGE_URL;
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteTeam({ id }).unwrap();
+      message.success("Team a’zosi muvaffaqiyatli o‘chirildi!");
+    } catch (error) {
+      message.error("Xatolik yuz berdi, qayta urinib ko‘ring!");
+      console.error(error);
+    }
+  };
 
   if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       {members.map((m: any) => {
-        // To‘liq image URL yaratish
         const fullImageUrl =
           m?.image_url && !m.image_url.startsWith("http")
             ? `${imageUrl.replace(/\/$/, "")}/${m.image_url}`
@@ -40,14 +53,32 @@ const TeamList = ({ onEdit }: { onEdit: (data: any) => void }) => {
               </span>
             </p>
 
-            <Button
-              type="primary"
-              className="mt-3 w-full"
-              onClick={() => onEdit(m)}
-              style={{ backgroundColor: "black", borderColor: "black" }}
-            >
-              Edit
-            </Button>
+            <div className="flex gap-2 mt-3">
+              <Button
+                type="primary"
+                onClick={() => onEdit(m)}
+                style={{ backgroundColor: "black", borderColor: "blue" }}
+                className="w-full"
+              >
+                Edit
+              </Button>
+
+              <Popconfirm
+                title="Ushbu a’zoni o‘chirmoqchimisiz?"
+                onConfirm={() => handleDelete(m.id)}
+                okText="Ha"
+                cancelText="Yo‘q"
+              >
+                <Button
+                  type="primary"
+                  loading={deleting}
+                  className="w-full"
+                  style={{ backgroundColor: "black", borderColor: "red" }}
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
+            </div>
           </div>
         );
       })}
