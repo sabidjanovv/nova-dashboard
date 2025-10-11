@@ -57,7 +57,7 @@ const TeamList = ({ onEdit }: { onEdit: (data: any) => void }) => {
               <Button
                 type="primary"
                 onClick={() => onEdit(m)}
-                style={{ backgroundColor: "black", borderColor: "black" }}
+                style={{ backgroundColor: "black", borderColor: "blue" }}
                 className="w-full"
               >
                 Edit
@@ -69,7 +69,12 @@ const TeamList = ({ onEdit }: { onEdit: (data: any) => void }) => {
                 okText="Ha"
                 cancelText="Yo‘q"
               >
-                <Button danger loading={deleting} className="w-full">
+                <Button
+                  type="primary"
+                  loading={deleting}
+                  className="w-full"
+                  style={{ backgroundColor: "black", borderColor: "red" }}
+                >
                   Delete
                 </Button>
               </Popconfirm>
