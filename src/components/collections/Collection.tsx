@@ -88,4 +88,4 @@ const CollectionCard: React.FC<Props> = ({ collection, onEdit, onDelete }) => {
   );
 };
 
-export default CollectionCard;
+export default React.memo(CollectionCard);

@@ -158,4 +158,4 @@ const CollectionsPage: React.FC = () => {
   );
 };
 
-export default CollectionsPage;
+export default React.memo(CollectionsPage);

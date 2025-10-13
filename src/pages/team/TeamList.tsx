@@ -3,6 +3,7 @@ import {
   useGetAllTeamQuery,
   useDeleteTeamMutation,
 } from "../../redux/api/team";
+import React from "react";
 
 const TeamList = ({ onEdit }: { onEdit: (data: any) => void }) => {
   const { data: members = [], isLoading } = useGetAllTeamQuery();
@@ -86,4 +87,4 @@ const TeamList = ({ onEdit }: { onEdit: (data: any) => void }) => {
   );
 };
 
-export default TeamList;
+export default React.memo(TeamList);
