@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAddTeamMutation, useEditTeamMutation } from "../../redux/api/team";
 
 interface TeamForm {
   full_name: string;
   position?: string;
-  description?: string;
+  description_uz?: string;
+  description_ru?: string;
+  description_en?: string;
   phone?: string;
   is_active: boolean;
   image?: FileList | null;
@@ -21,11 +23,15 @@ const TeamModal: React.FC<Props> = ({ open, setOpen, editData }) => {
   const [addTeam] = useAddTeamMutation();
   const [editTeam] = useEditTeamMutation();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { register, handleSubmit, reset, setValue, watch } = useForm<TeamForm>({
     defaultValues: {
       full_name: "",
       position: "",
-      description: "",
+      description_uz: "",
+      description_ru: "",
+      description_en: "",
       phone: "",
       is_active: true,
       image: null,
@@ -37,7 +43,9 @@ const TeamModal: React.FC<Props> = ({ open, setOpen, editData }) => {
       reset({
         full_name: editData.full_name,
         position: editData.position,
-        description: editData.description,
+        description_uz: editData.description_uz,
+        description_ru: editData.description_ru,
+        description_en: editData.description_en,
         phone: editData.phone,
         is_active: editData.is_active,
         image: null,
@@ -46,7 +54,9 @@ const TeamModal: React.FC<Props> = ({ open, setOpen, editData }) => {
       reset({
         full_name: "",
         position: "",
-        description: "",
+        description_uz: "",
+        description_ru: "",
+        description_en: "",
         phone: "",
         is_active: true,
         image: null,
@@ -54,17 +64,25 @@ const TeamModal: React.FC<Props> = ({ open, setOpen, editData }) => {
     }
   }, [editData, reset]);
 
+
   if (!open) return null;
 
   const onSubmit = async (values: TeamForm) => {
+    if (isSubmitting) return; // oldini olish uchun
+    setIsSubmitting(true);
+
     const formData = new FormData();
     formData.append("full_name", values.full_name);
     if (values.position) formData.append("position", values.position);
-    if (values.description) formData.append("description", values.description);
+    if (values.description_uz)
+      formData.append("description_uz", values.description_uz);
+    if (values.description_ru)
+      formData.append("description_ru", values.description_ru);
+    if (values.description_en)
+      formData.append("description_en", values.description_en);
     if (values.phone) formData.append("phone", values.phone);
     formData.append("is_active", String(values.is_active));
 
-    // add va update uchun mos nom bilan file qo‘shish
     if (values.image && values.image.length > 0) {
       formData.append(editData ? "file" : "image", values.image[0]);
     }
@@ -79,6 +97,8 @@ const TeamModal: React.FC<Props> = ({ open, setOpen, editData }) => {
       reset();
     } catch (error) {
       console.error("Error saving team:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -112,15 +132,30 @@ const TeamModal: React.FC<Props> = ({ open, setOpen, editData }) => {
             />
           </div>
 
-          {/* Description */}
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">Tavsif</label>
-            <textarea
-              {...register("description")}
-              rows={3}
-              className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-indigo-400 transition"
-            />
-          </div>
+          {/* Descriptions */}
+          {(["uz", "ru", "en"] as const).map((lang) => (
+            <div key={lang}>
+              <label className="block text-sm text-gray-600 mb-1">
+                Tavsif (
+                {lang === "uz"
+                  ? "O‘zbekcha"
+                  : lang === "ru"
+                  ? "Ruscha"
+                  : "Inglizcha"}
+                )
+              </label>
+              <textarea
+                {...register(
+                  `description_${lang}` as
+                    | "description_uz"
+                    | "description_ru"
+                    | "description_en"
+                )}
+                rows={2}
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-indigo-400 transition"
+              />
+            </div>
+          ))}
 
           {/* Phone */}
           <div>
@@ -163,15 +198,17 @@ const TeamModal: React.FC<Props> = ({ open, setOpen, editData }) => {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
+              disabled={isSubmitting}
+              className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition disabled:opacity-50"
             >
               Bekor qilish
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+              disabled={isSubmitting}
+              className="px-4 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition disabled:opacity-50"
             >
-              Saqlash
+              {isSubmitting ? "Saqlanmoqda..." : "Saqlash"}
             </button>
           </div>
         </form>
@@ -180,4 +217,5 @@ const TeamModal: React.FC<Props> = ({ open, setOpen, editData }) => {
   );
 };
 
-export default TeamModal;
+export default React.memo(TeamModal);
+

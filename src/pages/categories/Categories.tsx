@@ -1,8 +1,10 @@
 // pages/categories.tsx
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
+import { Segmented } from "antd";
 import {
   useGetAllCategoriesQuery,
+  useGetAllCategoriesByTypeQueryQuery,
   useAddCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
@@ -10,7 +12,7 @@ import {
 import CategoryModal from "../../components/category/CategoryModal";
 import CategoryCard from "../../components/category/CategoryCard";
 import { FiPlus } from "react-icons/fi";
-
+import { skipToken } from "@reduxjs/toolkit/query";
 interface Category {
   id: number;
   name: string;
@@ -20,7 +22,29 @@ interface Category {
 }
 
 const CategoriesPage: React.FC = () => {
-  const { data, isLoading, isError } = useGetAllCategoriesQuery(null);
+  const [filterType, setFilterType] = useState<
+    "barchasi" | "interior" | "exterior"
+  >("barchasi");
+
+  // Default barcha kategoriyalar
+  const {
+    data: allData,
+    isLoading: isLoadingAll,
+    isError: isErrorAll,
+  } = useGetAllCategoriesQuery(null);
+
+  // Turlarga qarab kategoriyalar
+  const {
+    data: filteredData,
+    isLoading: isLoadingByType,
+    isError: isErrorByType,
+  } = useGetAllCategoriesByTypeQueryQuery(
+    filterType !== "barchasi" ? filterType : skipToken,
+    {
+      skip: filterType === "barchasi", // skip ishlaydi faqat tanlangan bo‘lsa
+    }
+  );
+
   const [addCategory] = useAddCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
@@ -64,6 +88,10 @@ const CategoriesPage: React.FC = () => {
     }
   };
 
+  const isLoading = filterType === "barchasi" ? isLoadingAll : isLoadingByType;
+  const isError = filterType === "barchasi" ? isErrorAll : isErrorByType;
+  const data = filterType === "barchasi" ? allData : filteredData;
+
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -105,7 +133,7 @@ const CategoriesPage: React.FC = () => {
         <title>Kategoriyalar</title>
       </Helmet>
       <div className="container mx-auto px-6 py-8">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold text-gray-900">
             Kategoriyalar
           </h1>
@@ -117,6 +145,22 @@ const CategoriesPage: React.FC = () => {
           </button>
         </div>
 
+        {/* Segmented filter */}
+        <div className="mb-8">
+          <Segmented
+            options={[
+              { label: "Barchasi", value: "barchasi" },
+              { label: "Interior", value: "interior" },
+              { label: "Exterior", value: "exterior" },
+            ]}
+            value={filterType}
+            onChange={(val) =>
+              setFilterType(val as "barchasi" | "interior" | "exterior")
+            }
+          />
+        </div>
+
+        {/* Category list */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {data.map((category: Category) => (
             <CategoryCard
@@ -143,4 +187,4 @@ const CategoriesPage: React.FC = () => {
   );
 };
 
-export default CategoriesPage;
+export default React.memo(CategoriesPage);

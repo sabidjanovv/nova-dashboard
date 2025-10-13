@@ -158,4 +158,4 @@ const CollectionModal: React.FC<Props> = ({
   );
 };
 
-export default CollectionModal;
+export default React.memo(CollectionModal);

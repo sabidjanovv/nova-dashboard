@@ -42,6 +42,11 @@ const extendedApi = mainApi.injectEndpoints({
       providesTags: ["CATEGORY"], // 🔥 bu query cache yaratadi
     }),
 
+    getAllCategoriesByTypeQuery: build.query({
+      query: (type) => `categories/by-type?type=${type}`,
+      providesTags: ["CATEGORY"],
+    }),
+
     // 🔎 GET category by ID
     getCategoryById: build.query<any, any>({
       query: (id) => ({
@@ -56,6 +61,7 @@ const extendedApi = mainApi.injectEndpoints({
 
 export const {
   useGetAllCategoriesQuery,
+  useGetAllCategoriesByTypeQueryQuery,
   useGetCategoryByIdQuery,
   useAddCategoryMutation,
   useUpdateCategoryMutation,

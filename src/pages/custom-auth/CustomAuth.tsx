@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux";
+import React from "react";
 
 interface Props {
   to: string;
@@ -21,4 +22,4 @@ const CustomAuth: FC<Props> = ({ to }) => {
   return <Outlet />;
 };
 
-export default CustomAuth;
+export default React.memo(CustomAuth);

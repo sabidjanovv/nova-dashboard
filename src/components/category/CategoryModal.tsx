@@ -104,4 +104,4 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
   );
 };
 
-export default CategoryModal;
+export default React.memo(CategoryModal);

@@ -337,4 +337,4 @@ const CollectionDetail: React.FC = () => {
   );
 };
 
-export default CollectionDetail;
+export default React.memo(CollectionDetail);
